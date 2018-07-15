@@ -1,0 +1,133 @@
+class P
+	final int size = 10;
+	int pos[], sba;
+	char c, b;
+	
+	//err
+	final int size = ;
+	final int ;
+	char spo[;
+	
+	class M
+	{
+		int mz;
+		int sz, dz;
+		char p;
+	}
+	
+	class MB
+	{
+		//err
+		class SS{
+			int a;
+		}
+	}
+	
+
+{
+	void mm() 
+		//err
+		char ;
+		int x,;
+		char x[,;
+		int x =;
+		//
+	{
+		break;
+	}
+	
+	void mm1(int m)
+	{
+		s = ;
+		return;
+	}
+	
+	void mm2(int pos[], int sba)
+	int s, x;
+	{
+		//err
+		//s = new int[x+];
+		
+		//s = s[x+*/];
+		//
+		read(sba);
+	}
+	
+	int mm3()
+		int k;
+		char ch1;
+		int string[];
+	{
+		mm();
+		mm2(pos, sba);
+		k = 7;
+		k = string[2];
+		k = M.mz;
+		
+		string[6] = k;
+		M.mz = k;
+		k = k;
+		
+		k++;
+		k--;
+		
+		string[-k] = ch1 + 7;
+		string = new int[ch1 + 7];
+		string  = new char;
+		string = s*a + s/a - s%a;
+		string = -(s-a);
+		
+		while(x == 7 && x < y[4]){}
+		while(x != 7 || M.mz > pos[x]){}
+		while(x < 7){}
+		while(x <= 7){}
+		while(x > 7){}
+		while(x >= 7){}
+		
+		{
+				pos[x]++;
+		}
+		
+		if(a <= 0) a++;
+		else 
+			if(a != 0) a--;
+				else
+					m++;
+		
+		if(a > 7) a++;
+				
+		return 0;
+	}
+	void main()
+		
+	{ 
+		
+		//err
+		while (a < ){
+				while (x == x == ) {}
+		}
+		if (a <> ) a++;
+		a=x+a-8;
+		while() {a++;}
+		print();
+		{ ; }
+		z = new int[];
+		a[] = 5;
+		
+		print(x,2);
+		
+		{
+			//if() ;; 
+			if (a < 0) then {
+				a++;
+			}
+		}
+		
+		
+		mm2(,a);
+		
+		//err fatal
+		//class SS{
+		//}
+	}
+}

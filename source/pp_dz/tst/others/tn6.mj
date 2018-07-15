@@ -1,0 +1,23 @@
+class C 
+
+{
+
+  void main()
+    int a, b;
+    char c;
+    int m;
+  {
+
+    while (a < b) {
+      if (a < m) {}
+      if (b < m) {}
+    }
+
+    while (a > m) {a++;}
+    while (b > m) {
+      if (m == a) {m++;}
+    }
+  }
+
+
+}

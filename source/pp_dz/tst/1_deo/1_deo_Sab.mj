@@ -1,0 +1,15 @@
+class Sabirac 
+	final int osnova = 7;
+{
+	int saberi (int a, int b) 
+	{
+		return a+b+osnova;
+	}
+
+	void main () 
+		int r;
+	{
+		r = saberi(3, 2);
+		print(r);
+	}
+}

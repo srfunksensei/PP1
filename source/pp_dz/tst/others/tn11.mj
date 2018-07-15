@@ -1,0 +1,36 @@
+
+class C
+
+{
+
+  int sum ()
+    int m, n, r[];
+  {
+    return 0;
+  }
+  
+  int max(int k, int m)
+    int a[], b[], c[];
+    
+  {
+    return k;
+  }
+  
+  int min(int a, int p)
+    int b, d;
+  {
+    return a;
+  }
+
+  void main()
+    int a, b, c;
+  {
+    sum();
+    max(1, 2);
+    a++;
+    sum();
+    min(a, b);
+    sum();
+  }
+
+} 

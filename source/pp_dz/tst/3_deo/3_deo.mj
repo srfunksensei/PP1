@@ -1,0 +1,22 @@
+class Glavni 
+	int prom; 
+	char niz[]; // deklaracija niza
+{
+
+	int saberi (int a, char b) // parametre ne obradjujemo
+	{
+		return 17; 
+	}
+
+ 
+   void main () 
+		int r;
+	{
+		niz = new char[10];
+		r = saberi(prom,3); // parametri se ignorisu
+		niz[0]='a';
+		print (r);        // ispisuje se 17
+		print(niz[0]);  // ispisuje se a
+   }
+
+}

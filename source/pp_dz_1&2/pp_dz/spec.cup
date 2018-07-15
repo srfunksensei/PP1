@@ -1,0 +1,419 @@
+package pp_dz;
+
+import java_cup.runtime.*;
+import java.io.*;
+
+
+parser code {:
+	
+    //for counting
+    static int classNum, mainClassMethodNum, globalVarNum, globalConstNum, 
+	globalArrayNum, mainVarNum, mainStatmentNum, mainFunctionCallNum;
+    static int varNum, arrayNum;
+
+    static boolean mainMethod, innerClass;
+        
+    // sluzi da na kraju parsiranja znamo da li su se pojavljivale
+    // greske tokom parsiranja
+    boolean greska; 
+    
+    // glavni program, kao metod klase parser
+    public static void main(String args[]) throws Exception {
+        FileReader r = new FileReader(args[0]);
+        Lexer skener = new Lexer(r);
+        parser p = new parser(skener);
+        Symbol s = p.parse();  //pocetak parsiranja
+		//p.parser_out();
+        if (p.greska) System.out.println("Ulazni program ima gresaka!");
+        else System.out.println("Parsiranje uspesno zavrseno!");
+    }
+  
+    /***********************************************************************
+    * slede redefinisani metodi za prijavu gresaka radi izmene teksta poruke
+    ***********************************************************************/ 
+    public void report_fatal_error(String message, Object   info) throws java.lang.Exception {
+      done_parsing();
+      report_error(message, info);
+    }
+  
+    public void syntax_error(Symbol cur_token) {
+        report_error("\nSintaksna greska", cur_token);
+    }
+  
+    public void unrecovered_syntax_error(Symbol cur_token) throws java.lang.Exception {
+        report_fatal_error("Fatalna greska, parsiranje se ne moze nastaviti", cur_token);
+    }
+
+  public void report_error(String message, Object info)
+    {
+      greska=true;
+      System.err.print(message);
+      System.err.flush();
+      if (info instanceof Symbol)
+          System.err.println(" na liniji " + ((Symbol)info).left);
+      else System.err.println("");
+    }
+
+  private void parser_out(){
+		System.out.println("==================SYNTAX ANALYSIS====================");
+		System.out.println(classNum + "\tclasses");
+		System.out.println(mainClassMethodNum + "\tmethods in the program");
+		System.out.println(globalVarNum + "\tglobal variables");
+		System.out.println(globalConstNum + "\tglobal constants");
+		System.out.println(globalArrayNum + "\tglobal arrays");
+		System.out.println(mainVarNum + "\tlocal variables in main");
+		System.out.println(mainStatmentNum + "\tstatements in main");
+		System.out.println(mainFunctionCallNum + "\tfunction calls in main");
+	}
+
+
+:}
+
+// izvrsava se na pocetku parsiranja, pre nego sto parser pocne da cita sa ulaza
+init with {: 
+		classNum = 0;
+		mainClassMethodNum = 0;
+		globalVarNum = 0;
+		globalConstNum = 0;
+		globalArrayNum = 0;
+		mainVarNum = 0;
+		mainStatmentNum = 0;
+		mainFunctionCallNum = 0;
+		varNum = 0;
+		arrayNum = 0;
+
+		mainMethod = true;
+		innerClass = false;
+		greska = false;
+	    :};
+
+
+terminal INVALID;
+terminal CLASS, FINAL, VOID, PRINT, READ, NEW;
+terminal IF, ELSE, WHILE, RETURN, BREAK;
+terminal PLUS, MINUS, TIMES, DIV, MOD;
+terminal EQUAL, NOT_EQUAL, GREATER, GREATER_EQUAL, LESS,  LESS_EQUAL;
+terminal AND, OR, ASSIGNMENT, INC, DEC;
+terminal SEMI, COMMA, DOT;
+terminal LPAREN, RPAREN, LSQUARE, RSQUARE, LBRACE, RBRACE; //() [] {}
+terminal Integer NUMBER;
+terminal Character CHARCONST;
+terminal String IDENT;
+
+
+non terminal program, prog_id, declaration_list, declaration_part, type, rhs;
+non terminal const_dec, class_dec, var_dec, var_list, var_part, local_var_list;
+non terminal method_declaration_list, return_type_ident, method_dec; 
+non terminal form_pars, parameter_list, parameter, stmt_list, statement;
+non terminal unmatched, matched, designator, designator_stmt, ident_expr_list;
+non terminal act_pars, expr_list, expr, term_list, term, factor_list, factor;
+non terminal cond, ORcondTerm_list, condTerm, ANDcondFact_list, condFact;
+non terminal addop, mulop, relop, sqr_expr, des_paren;
+
+program ::= CLASS prog_id declaration_list LBRACE method_declaration_list RBRACE
+	{:
+		parser.classNum++;
+	:};
+
+prog_id ::= IDENT:id {:  :};
+
+declaration_list ::= declaration_list declaration_part
+	 |
+         /* epsilon */;
+
+declaration_part ::= const_dec:l
+		 {:  :}		 
+		 |
+		 class_dec:l
+		 {:  :}		 
+                 |               
+		 var_dec:l
+		 {:
+		   parser.globalVarNum += parser.varNum;
+		   parser.varNum = 0;
+		   parser.globalArrayNum += parser.arrayNum;
+		   parser.arrayNum = 0;
+		 :}
+		 ;
+
+type ::= IDENT;
+
+rhs ::= NUMBER 
+    | 
+    CHARCONST; 
+
+const_dec ::= FINAL type IDENT ASSIGNMENT rhs SEMI
+	{:
+	   parser.globalConstNum++;
+	:}
+	|
+	FINAL error SEMI:l
+	{: parser.report_error("Izvrsen oporavak do ; u liniji "+lleft,null); :};
+
+class_dec ::= CLASS IDENT LBRACE local_var_list RBRACE
+	{:
+		parser.classNum++;
+	:}
+	|
+	CLASS error RBRACE:l
+	{: parser.report_error("Izvrsen oporavak do } u liniji "+lleft,null); :};
+
+
+var_dec ::= type var_list SEMI
+	|
+	error SEMI:l
+	{: parser.report_error("Izvrsen oporavak do ; u liniji "+lleft,null); :};
+
+var_list ::= var_list COMMA var_part 
+     |
+     var_part;
+
+var_part ::= 
+     IDENT:l LSQUARE RSQUARE
+     {:
+		parser.arrayNum++;
+     :}
+     |	
+     IDENT:l
+     {:
+	if(parser.mainMethod) parser.mainVarNum++;
+	parser.varNum++;
+     :};
+
+
+local_var_list ::= local_var_list var_dec
+		|
+               /* epsilon */;
+
+method_declaration_list ::= method_declaration_list method_dec
+		|
+                /* epsilon */;
+
+return_type_ident ::= type IDENT:l
+		{:  :}
+            | 
+            VOID:l IDENT
+		{: :};
+
+method_dec ::= return_type_ident LPAREN form_pars RPAREN local_var_list LBRACE stmt_list RBRACE
+	   {:
+		parser.mainClassMethodNum++;
+	   :};
+           
+form_pars ::= parameter_list
+	  |
+          /* epsilon */;
+    
+parameter_list ::= parameter_list COMMA parameter
+               |
+               parameter;
+
+parameter ::= type IDENT:l
+		{:  :}
+	| 
+	type IDENT:l LSQUARE RSQUARE
+		{:  :};
+
+
+stmt_list ::= stmt_list statement
+	  |
+          /* epsilon */;
+
+statement ::= matched
+	{:
+	  if(parser.mainMethod)parser.mainStatmentNum++;
+	:}
+	|
+	unmatched
+	{:
+	  if(parser.mainMethod)parser.mainStatmentNum++;
+	:}
+	|
+	error:l 
+	{: parser.report_error("Izvrsen oporavak do } u liniji "+lleft,null); :};
+
+unmatched ::= IF LPAREN cond RPAREN statement
+	|
+	IF LPAREN cond RPAREN matched ELSE unmatched
+	{:
+	  if(parser.mainMethod)parser.mainStatmentNum++;
+	:}
+	|
+	WHILE LPAREN cond RPAREN unmatched;
+
+matched ::= 
+	designator_stmt
+	|
+	BREAK:l SEMI
+	{:  :}
+	|
+	RETURN:l SEMI
+	{:  :}
+	|
+	RETURN:l expr SEMI
+	{:  :}
+	|
+	READ:l LPAREN designator RPAREN SEMI
+	{:
+	  if(parser.mainMethod) {
+		parser.mainStatmentNum--;
+		parser.mainFunctionCallNum++;
+	  }
+ 	:}
+	|
+	PRINT:l LPAREN expr RPAREN SEMI
+	{: 
+	  if(parser.mainMethod) {
+		parser.mainStatmentNum--;
+		parser.mainFunctionCallNum++;
+	  }
+	:}
+	|
+	PRINT:l LPAREN expr COMMA NUMBER RPAREN SEMI
+	{: 
+	  if(parser.mainMethod) {
+		parser.mainStatmentNum--;
+		parser.mainFunctionCallNum++;
+	  }
+	:}
+	|
+	LBRACE:l stmt_list RBRACE
+	{:  :}
+	|
+	IF:l LPAREN cond RPAREN matched ELSE matched
+	{: 
+	  if(parser.mainMethod)parser.mainStatmentNum++;
+	:}
+	|
+	WHILE:l LPAREN cond RPAREN matched
+	{:  :};
+
+designator_stmt ::= designator ASSIGNMENT:l expr SEMI
+	{:  :}
+	|
+	designator LPAREN:l RPAREN SEMI
+	{: :} 
+	|
+	designator INC:l SEMI
+	{: :}
+	|
+	designator DEC:l SEMI
+	{: :}
+	|
+	designator ASSIGNMENT error SEMI:l
+	{: parser.report_error("Izvrsen oporavak do ; u liniji "+lleft,null); :}
+	|
+	designator LPAREN error RPAREN:l SEMI
+	{: parser.report_error("Izvrsen oporavak do ) u liniji "+lleft,null); :};
+
+designator ::= ident_expr_list;
+
+ident_expr_list ::= ident_expr_list DOT IDENT
+        |
+        ident_expr_list  LSQUARE expr RSQUARE
+		|
+		IDENT;
+
+addop ::= PLUS 
+      | 
+      MINUS;
+
+mulop ::= TIMES 
+      | 
+       DIV
+	|
+	MOD;
+
+relop ::= EQUAL:l
+	{:  :}
+	|
+	NOT_EQUAL:l
+	{:  :}
+	|
+	GREATER:l
+	{:  :}
+	|
+	GREATER_EQUAL:l
+	{:  :}
+	|
+	LESS:l
+	{:  :}
+	|
+	LESS_EQUAL:l
+	{: :};
+
+act_pars ::= expr_list;
+
+expr_list ::= expr_list COMMA expr 
+          |
+          expr;
+
+expr ::= term_list
+	|
+	MINUS term_list;
+    
+term_list ::= term_list addop term
+          |
+          term;
+
+term ::= factor_list;
+
+factor_list ::= factor_list mulop factor
+            |
+	    factor;
+
+factor ::= 
+			designator                           
+           |
+           NUMBER             
+           |
+           CHARCONST
+			|
+           LPAREN expr RPAREN     
+           |
+			NEW type
+			|
+			NEW type sqr_expr 
+			|
+			des_paren;
+
+des_paren ::= designator LPAREN RPAREN
+			{:
+				if(parser.mainMethod) {
+					parser.mainStatmentNum--;
+					parser.mainFunctionCallNum++;
+				}
+			:}
+           |
+		   designator LPAREN act_pars RPAREN
+		   |
+		   designator LPAREN error RPAREN:l
+		   {: parser.report_error("Izvrsen oporavak do ) u liniji "+lleft,null); :};
+		   
+sqr_expr ::= LSQUARE expr RSQUARE
+			 |
+			 LSQUARE error RSQUARE:l 
+			 {: parser.report_error("Izvrsen oporavak do ] u liniji "+lleft,null); :}; 
+			 
+cond ::= condTerm ORcondTerm_list
+	|
+	condTerm
+	|
+	error:l 
+	{: parser.report_error("Izvrsen oporavak do ) u liniji "+lleft,null); :};
+
+ORcondTerm_list ::= ORcondTerm_list OR condTerm
+	|
+	OR:l condTerm
+	{: :};
+
+condTerm ::= condFact ANDcondFact_list
+	|
+	condFact;
+
+ANDcondFact_list ::= ANDcondFact_list AND condFact
+	|
+	AND:l condFact
+	{: :};
+
+condFact ::= expr relop expr;

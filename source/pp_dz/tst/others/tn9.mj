@@ -1,0 +1,15 @@
+
+class C 
+	int a, b, c, d, ja;
+{
+
+  void main() {
+   	if (a == 1 && b!= 4 || c == 3) a++;
+   	
+   	if (a < b && c > d) b--;
+   	
+   	while(a + 3 < 15 || ja >1) {
+   	}
+  }
+
+}

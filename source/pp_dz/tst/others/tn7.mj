@@ -1,0 +1,31 @@
+
+class C
+
+{
+
+  int sum (char a, char b)
+    int m, n, r[];
+  {
+  }
+  
+  int sub()
+    int a, b;
+  {
+  }
+  
+  int max(int k)
+    int a[], b[], c[], d[];
+    
+  {
+  }
+  
+  int min(int a)
+    int a, b, c, d;
+  {
+  }
+
+  int exp(int c)
+    int r, p, g, d;
+  {
+  }
+} 

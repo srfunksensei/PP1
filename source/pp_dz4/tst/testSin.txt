@@ -1,0 +1,23 @@
+class Glavni 
+	float prom; // greska, float tip ne postoji
+	char niz[]; // deklaracija niza
+{
+
+	int saberi (char a, char b) // parametre ne obradjujemo
+	{
+		return; // greska – return bez izraza
+	}
+
+	int oduzmi() {} // greska – treba return
+   
+   void nista() { return 5; } // greska – ne sme izraz u return
+ 
+   void main () 
+		int r;
+	{
+		r = saberi(niz[0], niz[1]);
+		print(prom);
+	// u redu je sto nema return
+   }
+
+}

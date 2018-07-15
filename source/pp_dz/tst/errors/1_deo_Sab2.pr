@@ -1,0 +1,16 @@
+class Sabirac 
+	final int osnova = 7;
+{
+	int saberi (int a, int b) 
+	{
+		return a+b+osnova;
+	}
+
+	void main () 
+		int r;
+	{
+		r = saberi(, 2);  //GRESKA
+		print(r);
+	}
+}
+

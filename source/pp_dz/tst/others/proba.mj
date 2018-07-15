@@ -1,0 +1,150 @@
+class Glavni 
+	
+	final int a = 10;
+	final char s = 'm';
+	int prom,as; 
+	//char niz[]; // deklaracija niza
+	
+	int p,q;
+	//char a;
+{
+
+	//int saberi (int a, char b) // parametre ne obradjujemo
+	//{
+	//	return 17; 
+	//}
+	
+	//void mb(){
+	//	print(a+1);
+	//	as = 20;
+	//	prom = 30;
+		
+	//	return;
+	//}
+	
+	int mb1(){
+		return 13+a*2-1;
+	}
+	
+	int mb2(){
+		return mb1();
+	}
+	
+	int f(int a, int b, int c)
+		int ss, brq;
+		char ch;
+	{
+		ss = 4;
+		ss++;
+		brq = mb2();
+		print(brq);
+		return a + b + c + ss;
+	}
+	
+	//int m(int i, int j)
+	//	int k;
+	//{
+	//		p = j;
+			//print(j);
+	//		k = i;
+			//print(k);
+	//		return k;
+	//}
+	
+	//void fja(char a, char b){
+	//	print(a);
+	//	print(b, 4);
+	//}
+	
+
+   void main () 
+		int r, m;
+		//char c, c1, c2;
+		//char bla[];
+	{
+		//niz = new char[10];
+		//r = saberi(prom,3); // parametri se ignorisu
+		//niz[0]='a';
+		//a = 1;
+		prom = 2;
+		r = prom + a;
+		
+		//print (m);
+		//print(niz[0]);  // ispisuje se a
+		
+		//r = mb2();
+		print(r);
+		
+		r = 2*(2+3) - (2/2);
+		print(r);
+		as = r*r;
+		as++;
+		//print(as);
+		//print(s);
+		//mb();
+		//print(as);
+		//print(prom);
+		
+		m = 10;
+		r = f(m, 10*2, (10-5)*(8+2));
+		print(r);
+		//r = m + a*2 - 14;
+		//p  =5;
+		//q = 6;
+		//q = m(p,1);
+		//print(q);
+		
+		//bla = new int[5];
+		//prom = 10;
+		//print(prom);
+		//bla[2] = prom;
+		//bla[2]++;
+		//print(bla[2]);
+		
+		//bla[0] = 'm';
+		//bla[1] = 'b';
+		
+		//fja(bla[0], bla[1]);
+		//read(p);
+		//if(p<a) {
+			//if (p < 5) p = 1;
+			//else p = 4;
+		//} else
+		//{
+			//p = 2;
+		//}
+		
+		//if( p< 4) print(17, 3);
+		
+		p = 0;
+		while (p < 5){
+			p++;
+			//print(p);
+		}
+		print(p);
+		
+		
+		read(as);
+		if(as > 5) print(as);
+		else print(s);
+		//read(m);
+		//read(c1);
+		//read(niz[0]);
+		
+		//print(niz[0]);
+		//print(c1);
+		//print(m);
+		
+		//print(s, 5);
+		//print (a,5);        // ispisuje se 17
+		//read(r);
+		//r++;
+		//print(r);
+		//r++;
+		//print(r);
+		//r--;
+		//print(r);
+		
+   }
+
+}

@@ -1,0 +1,72 @@
+class Sabirac 
+	final int osnova = 7;
+	final char c = 7;
+	final char ime = 'c';
+	int as;
+	char s[];
+{
+	int saberi (int a, int b) 
+	{
+		return a+b+osnova;
+	}
+	
+	void sab(){
+		
+	}
+	
+	int oduzmi() {} // greska – treba return
+   
+   void nista() { return 5; } // greska – ne sme izraz u return
+
+	void main () 
+		int r;
+		char ch;
+	{
+		
+		r = saberi(3,osnova);
+		
+		
+		print(r);
+		
+		r = 7;
+		ch = 's';
+		r++;
+		as--;
+		read(r);
+		read(as);
+		read(ch);
+		s  = new char[5];
+		s  = new char[r];
+		as = r;
+		print(r);
+		print(r,2);
+		print(r+as-osnova, 3);
+		as = as*r + (r+r+r);
+		
+		if((as+3) <= (osnova-r)){
+			{
+				r++;
+			}
+		} else {
+			ch = 'c';
+		}
+		
+		s[0] = 'c';
+		read(s[0]);
+		
+		
+		//greske
+		osnova = 10;
+		read(osnova);
+		ch++;
+		as = 'c';
+		s  = new char[ch];
+		while(as<3 && osnova != r){
+		}
+		as  = sab();
+		r = saberi(3, 2, 3); //ne radi!!!
+		r = saberi(3, 2*ch);
+		r = saberi(3, s[0]);
+		r = saberi(3, ch);
+	}
+}
